@@ -13,10 +13,6 @@ let reconciler = ReactReconciler({
   },
 
   /* 插入节点相关 */
-  // -------------------
-  //      Mutation
-  //     (optional)
-  // -------------------
 
   appendInitialChild(parent, child) {
     parent.appendChild(child);
@@ -28,15 +24,31 @@ let reconciler = ReactReconciler({
     parent.appendChild(child);
   },
 
+  /* 删除节点相关 */
+  removeChildFromContainer(container, child) {
+    container.removeChild(child);
+  },
+  removeChild(parent, child) {
+    parent.removeChild(child);
+  },
+  insertInContainerBefore(container, child, before) {
+    container.insertBefore(child, before);
+  },
+  insertBefore(parent, child, before) {
+    parent.insertBefore(child, before);
+  },
+
+  prepareUpdate(instance, type, oldProp, newProps, rootContainerInstance, hostContext) {
+    console.log('prepareUpdate', ...arguments);
+  },
+
   prepareForCommit(...args) {
     console.log('prepareForCommit', ...args);
   },
   resetAfterCommit(...args) {
     console.log('resetAfterCommit', ...args);
   },
-  finalizeInitialChildren(...args) {
-    console.log('prepareUpdate', ...args);
-  },
+  finalizeInitialChildren(...args) {},
   shouldSetTextContent(...args) {
     console.log('shouldSetTextContent', ...args);
   },
@@ -50,6 +62,10 @@ let reconciler = ReactReconciler({
     ['alt', 'className', 'href', 'rel', 'src', 'target'].forEach(k => {
       if (props[k]) el[k] = props[k];
     });
+
+    if (props.onClick) {
+      el.addEventListener('click', props.onClick);
+    }
     return el;
   },
 
