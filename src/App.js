@@ -1,9 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
   let [showLogo, setShowLogo] = React.useState(true);
+  let [color, setColor] = React.useState('red');
+  useEffect(() => {
+    let colors = ['red', 'green', 'blue'];
+    let i = 0;
+    let interval = setInterval(() => {
+      i++;
+      setColor(colors[i % 3]);
+    }, 1000);
+    return () => {
+      clearInterval(interval)
+    }
+    
+  }, []);
   return (
     <div className="App">
       <header className="App-header">
@@ -17,7 +30,7 @@ function App() {
             alt="logo"
           />
         )}
-        <p>
+        <p bgColor={color}>
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <a

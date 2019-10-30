@@ -39,7 +39,17 @@ let reconciler = ReactReconciler({
   },
 
   prepareUpdate(instance, type, oldProp, newProps, rootContainerInstance, hostContext) {
-    console.log('prepareUpdate', ...arguments);
+    let payload;
+    if (oldProp.bgColor !== newProps.bgColor) {
+      payload = { newBgColor: newProps.bgColor };
+    }
+    return payload;
+  },
+
+  commitUpdate(instance, updatePayload, type, oldProps, newProps, finishedWork) {
+    if (updatePayload.newBgColor) {
+      instance.style.backgroundColor = updatePayload.newBgColor;
+    }
   },
 
   prepareForCommit(...args) {
@@ -65,6 +75,9 @@ let reconciler = ReactReconciler({
 
     if (props.onClick) {
       el.addEventListener('click', props.onClick);
+    }
+    if (props.bgColor) {
+      el.style.backgroundColor = props.bgColor;
     }
     return el;
   },
